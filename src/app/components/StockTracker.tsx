@@ -27,6 +27,7 @@ function StockTracker() {
     SPY: null,
     WMT: null,
   }); // Setting the state for current updates
+  const [errorMessage, setErrorMessage] = useState(""); // Setting inital state for error message.
 
   useEffect(() => {
     // Using useEffect to connect to external source or an external API
@@ -43,7 +44,7 @@ function StockTracker() {
       "WMT",
     ]; // Array of Stocks to grab data from
 
-    stockSymbols.forEach((symbol) => {
+    stockSymbols.forEach((symbol) => { // For each of the stocks fetch the current data using the forEach method.
       fetch(
         `https://api.twelvedata.com/time_series?apikey=36c6d04c0f9e484183f9bf0f1376d474&interval=1min&symbol=${symbol}`
       )
@@ -89,17 +90,17 @@ function StockTracker() {
     });
   }, [stocks]);
 
-  function refreshStock(symbol: string) {
+  function refreshStock(symbol: string) { // Function for grabbing new stock info.
     fetch(
       `https://api.twelvedata.com/time_series?apikey=36c6d04c0f9e484183f9bf0f1376d474&interval=1min&symbol=${symbol}`
     )
       .then((res) => res.json())
       .then((stocks) => {
         console.log(`${symbol} Data Updated:`, stocks);
-        if (stocks?.meta?.timestamp === lastUpdated[symbol]) {
-          alert(`No new updates for ${symbol}. The market might be closed.`);
+        if (stocks?.meta?.timestamp === lastUpdated[symbol]) { // Checking the markets time.
+          alert(`No new updates for ${symbol}. The market might be closed.`); // Sending an alert if the markets are closed.
         } else {
-          setStocks((prev: any) => ({ ...prev, [symbol]: stocks }));
+          setStocks((prev: any) => ({ ...prev, [symbol]: stocks })); // Other sending stock api updates when the user uses the refresh button.
           setLastUpdated((prev: any) => ({
             ...prev,
             [symbol]: stocks?.meta?.timestamp,
@@ -107,7 +108,7 @@ function StockTracker() {
         }
       })
       .catch((error) =>
-        console.error(`Unable to refresh ${symbol} data`, error)
+        console.error(`Unable to refresh ${symbol} data`, error) // Simple error handling.
       );
   }
 
