@@ -1,11 +1,13 @@
 import React from "react";
 
-function AboutMe () {
-    return (
-        <>
-            <h1>I'm Jermell</h1>
-        </>
-    )
+function AboutMe() {
+  return (
+    <>
+      <div>
+        <h1>I'm Jermell</h1>
+      </div>
+    </>
+  );
 }
 
-export default AboutMe
+export default AboutMe;
