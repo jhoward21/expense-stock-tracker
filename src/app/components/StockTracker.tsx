@@ -1,6 +1,5 @@
 "use client";
-import { error } from "console";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 function StockTracker() {
   const [stocks, setStocks] = useState<any>({
@@ -119,8 +118,8 @@ function StockTracker() {
         {Object.keys(stocks).map(
           (symbol) =>
             stocks[symbol] && (
-              <div>
-                <div key={symbol} className="stock-card">
+              <div key={symbol}>
+                <div className="stock-card">
                   <div className="tradingview-widget-container">
                     <div id={`tradingview_${symbol}`}></div>
                   </div>
