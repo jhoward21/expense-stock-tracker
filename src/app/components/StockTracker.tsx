@@ -31,7 +31,7 @@ function StockTracker() {
 
   useEffect(() => {
     // Using useEffect to connect to external source or an external API
-    const stockSymbols = [
+    const stockSymbols = [ // These are the stocks we want to connect to. 
       "AAPL",
       "NVDA",
       "TSLA",
@@ -48,6 +48,7 @@ function StockTracker() {
       fetch(
         `https://api.twelvedata.com/time_series?apikey=36c6d04c0f9e484183f9bf0f1376d474&interval=1min&symbol=${symbol}`
       )
+       
         .then((res) => res.json()) // Converting the response to JSON
         .then((stocks) => {
           console.log(`${symbol} Data:`, stocks); // Returning the stocks data to the console.
@@ -64,7 +65,7 @@ function StockTracker() {
   }, []);
 
   useEffect(() => {
-    Object.keys(stocks).forEach((symbol) => {
+    Object.keys(stocks).forEach((symbol) => { // For each of the stocks fetch the current data using the forEach method.
       if (stocks[symbol]) {
         const script = document.createElement("script");
         script.src =
