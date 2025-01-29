@@ -1,8 +1,32 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+type StockValues = {
+  datetime: string;
+  open: string;
+  high: string;
+  low: string;
+  close: string;
+};
+
+type StockData = {
+  meta?: {
+    symbol: string;
+    timestamp: string;
+  };
+  values?: StockValues[];
+};
+
+type StocksState = {
+  [key: string]: StockData | null;
+};
+
+type LastUpdatedState = {
+  [key: string]: string | null;
+};
+
 function StockTracker() {
-  const [stocks, setStocks] = useState<any>({
+  const [stocks, setStocks] = useState<StocksState>({
     AAPL: null,
     NVDA: null,
     TSLA: null,
@@ -14,7 +38,7 @@ function StockTracker() {
     SPY: null,
     WMT: null,
   }); // Setting the initial state of our values.
-  const [lastUpdated, setLastUpdated] = useState<any>({
+  const [lastUpdated, setLastUpdated] = useState<LastUpdatedState>({
     AAPL: null,
     NVDA: null,
     TSLA: null,
@@ -26,7 +50,7 @@ function StockTracker() {
     SPY: null,
     WMT: null,
   }); // Setting the state for current updates
-  const [errorMessage, setErrorMessage] = useState(""); // Setting inital state for error message.
+  // const [errorMessage, setErrorMessage] = useState(""); // Setting inital state for error message.
 
   useEffect(() => {
     // Using useEffect to connect to external source or an external API
@@ -51,8 +75,8 @@ function StockTracker() {
         .then((res) => res.json()) // Converting the response to JSON
         .then((stocks) => {
           console.log(`${symbol} Data:`, stocks); // Returning the stocks data to the console.
-          setStocks((prev: any) => ({ ...prev, [symbol]: stocks })); // Updating the state of the stocks value.
-          setLastUpdated((prev: any) => ({
+          setStocks((prev) => ({ ...prev, [symbol]: stocks })); // Updating the state of the stocks value.
+          setLastUpdated((prev) => ({
             ...prev,
             [symbol]: stocks?.meta?.timestamp,
           }));
@@ -100,8 +124,8 @@ function StockTracker() {
         if (stocks?.meta?.timestamp === lastUpdated[symbol]) { // Checking the markets time.
           alert(`No new updates for ${symbol}. The market might be closed.`); // Sending an alert if the markets are closed.
         } else {
-          setStocks((prev: any) => ({ ...prev, [symbol]: stocks })); // Other sending stock api updates when the user uses the refresh button.
-          setLastUpdated((prev: any) => ({
+          setStocks((prev) => ({ ...prev, [symbol]: stocks })); // Other sending stock api updates when the user uses the refresh button.
+          setLastUpdated((prev) => ({
             ...prev,
             [symbol]: stocks?.meta?.timestamp,
           }));
@@ -124,7 +148,7 @@ function StockTracker() {
                     <div id={`tradingview_${symbol}`}></div>
                   </div>
                   <h2>{stocks[symbol]?.meta?.symbol}</h2>
-                  {stocks[symbol]?.values?.map((entry: any, index: number) => (
+                  {stocks[symbol]?.values?.map((entry, index) => (
                     <ul key={index}>
                       <li>Date and Time: {entry.datetime}</li>
                       <li>Open: {entry.open}</li>
